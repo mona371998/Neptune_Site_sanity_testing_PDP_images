@@ -1,0 +1,105 @@
+package neptune_testing;
+
+import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+//import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Broken_link_500_error {
+
+	public static void main(String[] args) throws Exception {
+		VerifyBrokenImages1();
+		
+	}
+	public static void VerifyBrokenImages1() throws Exception {
+		FileInputStream file=new FileInputStream("D:\\\\Neptune Sanity testing\\\\PDP_product_list.xlsx");
+		
+		
+		XSSFWorkbook workbook=new XSSFWorkbook(file);
+		XSSFSheet sheet=workbook.getSheet("CL");
+		
+		XSSFWorkbook workbook1=new XSSFWorkbook();
+		XSSFSheet sheet1=workbook1.createSheet("PLP_image");
+		
+		
+		
+		int rows=sheet.getLastRowNum();
+		int cols=sheet.getRow(0).getLastCellNum();
+		WebDriver driver = new ChromeDriver();
+		
+		for(int r=0;r<=rows;r++)
+		{
+			XSSFRow row=sheet.getRow(r);  
+			
+			for(int c=0;c<cols;c++) 
+			{
+				XSSFCell cell=row.getCell(c);
+				String linkUrl= cell.getStringCellValue();
+				
+				//System.out.print(cell.getStringCellValue()); 
+				System.out.println();
+				driver.get(linkUrl);
+				
+				
+//				try {
+//					
+//					URL url = new URL(linkUrl);
+//					HttpURLConnection httpURLConnect = (HttpURLConnection)url.openConnection();
+//					httpURLConnect.setConnectTimeout(3000);
+//					httpURLConnect.connect();
+//					if(httpURLConnect.getResponseCode()==200) {
+//						System.out.println(linkUrl+ "-"+httpURLConnect.getResponseMessage());
+//					}
+//					if(httpURLConnect.getResponseCode()==HttpURLConnection.HTTP_NOT_FOUND) 
+//						{
+//							System.out.println(linkUrl+ "-"+httpURLConnect.getResponseMessage()+ "-"+HttpURLConnection.HTTP_NOT_FOUND);
+//						}}
+//					
+//					catch(Exception e) {
+//						
+//					}
+				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			      // get current URL and print
+			      String strUrl = driver.getCurrentUrl();
+			      System.out.println("Current Url is:"+ strUrl);
+			     
+				
+				/////////////////////////////////////
+				if(strUrl.contains("https://latinamerica.brother.com/500")) {
+					System.out.println("500");
+				}
+				else{
+					System.out.println("ok");
+					
+				}
+}}}
+
+}
+
+		
+	
