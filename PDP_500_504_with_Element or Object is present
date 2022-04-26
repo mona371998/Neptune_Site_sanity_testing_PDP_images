@@ -1,0 +1,122 @@
+package neptune_testing;
+
+import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Neptune_Site_sanity_testing_PDP_images_With_500 {
+	public static WebDriver driver;
+
+	public static void main(String[] args) throws Exception {
+		VerifyBrokenImages();
+	}
+
+	public static void VerifyBrokenImages() throws Exception {
+
+		// fetch excel data..............................................
+
+		FileInputStream file = new FileInputStream("D:\\Neptune Sanity testing\\PDP_product_list.xlsx");
+
+		XSSFWorkbook workbook = new XSSFWorkbook(file);
+		XSSFSheet sheet = workbook.getSheet("LAC");
+
+		int rows = sheet.getLastRowNum();
+		int cols = sheet.getRow(0).getLastCellNum();
+		WebDriver driver = new ChromeDriver();
+
+		for (int r = 0; r <= rows; r++) {
+			XSSFRow row = sheet.getRow(r);
+
+			for (int c = 0; c < cols; c++) {
+				XSSFCell cell = row.getCell(c);
+				String abc = cell.getStringCellValue();
+
+				System.out.println();
+				System.out.print(abc);
+				// get data......................................................
+				driver.get("https://latinamerica.brother.com/products/"+abc);
+				Thread.sleep(3000);
+				///////checking 500
+				//driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			      // get current URL and print
+			      String strUrl = driver.getCurrentUrl();
+			      //System.out.println("Acctual Url is:"+ strUrl);
+			      if(strUrl.contains("https://latinamerica.brother.com/500")) {
+			    	  
+						System.err.print(" >> 500");}
+			      else {
+				
+					//
+						WebElement l =driver.findElement(By.tagName("h1"));
+					    String text= l.getText();
+					    if(text.contains("504 Gateway Time-out")) {
+					    System.out.println("Text content: "+ l.getText());}
+						//
+						
+			      else{
+						System.out.println(" >> ok");
+			      }
+				//.......................................................
+				Thread.sleep(5000);
+				
+				WebElement imageclass = driver.findElement(By.xpath("//div[2]/section/div/div/div[1]/div[1]/div[1]"));
+				//.............
+				if(imageclass.findElements(By.tagName("img")).size()!=0){
+				//.................
+				
+				WebElement images = imageclass.findElement(By.tagName("img"));
+				String imageSrc = images.getAttribute("src");
+				
+				System.out.println();
+
+					try {
+						driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+						URL url = new URL(imageSrc);
+						URLConnection urlConnection = url.openConnection();
+						HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+						httpURLConnection.setConnectTimeout(5000);
+						httpURLConnection.connect();
+
+						if(httpURLConnection.getResponseCode() == 200)
+								System.out.println(abc+">"+imageSrc + " >> " + httpURLConnection.getResponseCode() + " >> " +httpURLConnection.getResponseMessage());
+							
+						else
+							System.err.println("BUG"+abc+">"+imageSrc + " >> " + httpURLConnection.getResponseCode() + " >> " +httpURLConnection.getResponseMessage());
+
+						httpURLConnection.disconnect();
+					} catch (Exception e) {
+						System.err.println("Exception BUG"+abc+">"+imageSrc);
+					}
+				}
+				
+
+				//
+				 else {
+						System.out.println("Image not present");
+					}
+				}
+				//
+				
+									
+					
+				}
+				
+				
+
+			}
+			     
+			     
+		
+	}}
+
