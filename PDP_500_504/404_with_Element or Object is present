@@ -29,7 +29,12 @@ public class Neptune_Site_sanity_testing_PDP_images_With_500 {
 		FileInputStream file = new FileInputStream("D:\\Neptune Sanity testing\\PDP_product_list.xlsx");
 
 		XSSFWorkbook workbook = new XSSFWorkbook(file);
-		XSSFSheet sheet = workbook.getSheet("LAC");
+	//	XSSFSheet sheet = workbook.getSheet("LAC");
+		//XSSFSheet sheet = workbook.getSheet("MX");
+XSSFSheet sheet = workbook.getSheet("CL");
+//		XSSFSheet sheet = workbook.getSheet("PE");
+//		XSSFSheet sheet = workbook.getSheet("AR");
+//		XSSFSheet sheet = workbook.getSheet("BR");
 
 		int rows = sheet.getLastRowNum();
 		int cols = sheet.getRow(0).getLastCellNum();
@@ -45,28 +50,49 @@ public class Neptune_Site_sanity_testing_PDP_images_With_500 {
 				System.out.println();
 				System.out.print(abc);
 				// get data......................................................
-				driver.get("https://latinamerica.brother.com/products/"+abc);
+			//	driver.get("https://latinamerica.brother.com/products/"+abc);
+            	driver.get("https://www.brother.cl/products/"+abc);
+//				driver.get("https://www.brother.com.br/products/"+abc);
+//				driver.get("https://www.brother.com.ar/products/"+abc);
+				//driver.get("https://www.brother.com.mx/products/"+abc);
+//				driver.get("https://www.brother.com.pe/products/"+abc);
 				Thread.sleep(3000);
 				///////checking 500
 				//driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			      // get current URL and print
 			      String strUrl = driver.getCurrentUrl();
 			      //System.out.println("Acctual Url is:"+ strUrl);
-			      if(strUrl.contains("https://latinamerica.brother.com/500")) {
-			    	  
+			      if(strUrl.contains("500")) {
+//			      if(strUrl.contains("https://latinamerica.brother.com/500")) {
 						System.err.print(" >> 500");}
 			      else {
 				
-					//
+					//504 Gateway Time-out
 						WebElement l =driver.findElement(By.tagName("h1"));
-					    String text= l.getText();
+					    String text= l.getText(); 
 					    if(text.contains("504 Gateway Time-out")) {
-					    System.out.println("Text content: "+ l.getText());}
-						//
+					    System.out.println(" Text content: "+ l.getText());}
+						//Ops! Error 404
+					    else if(text.contains("Ops! Error 404")) {
+						    System.err.println(" Text content: "+ l.getText());}
+					    
 						
 			      else{
 						System.out.println(" >> ok");
-			      }
+			      
+				// Ops! Error 404
+//					    WebElement B =driver.findElement(By.tagName("h1"));
+//					    String text1= B.getText();
+//					    if(text1.contains("Ops! Error 404")) {
+//					    System.out.println("Text content: "+ B.getText());}
+//					    
+//						
+//			      else{
+//						System.out.println(" >> not 404 ok");
+//			      }
+//					    
+//				    
+					    
 				//.......................................................
 				Thread.sleep(5000);
 				
@@ -117,6 +143,6 @@ public class Neptune_Site_sanity_testing_PDP_images_With_500 {
 			}
 			     
 			     
-		
+		}
 	}}
 
