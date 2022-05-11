@@ -1,0 +1,88 @@
+package full_Neptune_site_testing;
+
+import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.Driver;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Accessories_name_search_page {
+
+	
+		public static void main(String[] args) throws Exception {
+			 VerifyAccessoriesBrokenname();
+			}
+
+			public static void VerifyAccessoriesBrokenname() throws Exception {
+				
+				//..............................................
+			
+//				FileInputStream file=new FileInputStream("D:\\Neptune Sanity testing\\Sprint-38\\Accessories_search_page.xlsx");
+//				
+//			
+//				XSSFWorkbook workbook=new XSSFWorkbook(file);
+//				XSSFSheet sheet=workbook.getSheet("URL");
+//				int rows=sheet.getLastRowNum();
+//				int cols=sheet.getRow(0).getLastCellNum();
+				//System.out.println(cols+" "+rows);
+//				
+				WebDriver driver = new ChromeDriver();
+//				
+//				for(int r=0;r<=rows;r++)
+//				{
+//					XSSFRow row=sheet.getRow(r);  
+//					
+//					for(int c=0;c<cols;c++) 
+//					{
+//						XSSFCell cell=row.getCell(c);
+//						String abc= cell.getStringCellValue();
+						
+						//System.out.print(cell.getStringCellValue()); 
+						System.out.println();
+						
+
+						//driver.get(abc);
+						
+						//driver.get("https://www.brother.cl/consumibles");
+						driver.get("https://latinamerica.brother.com/consumibles");
+						//click search button
+						driver.findElement(By.xpath("//*[@id=\"supplies\"]/button")).click();
+						
+						//Click Vertodo
+						for(int i=0; i<=40; i++) {
+						if(driver.findElement(By.className("load-more")).isDisplayed() ) {
+
+							 driver.findElement(By.className("load-more")).click();
+							 Thread.sleep(3000);
+						}
+						
+						}
+						
+				HashMap<String,String> images=new HashMap<String,String>();
+				List<WebElement> coveoResult = driver.findElements(By.className("coveo-list-layout"));
+				
+				for (WebElement item : coveoResult) 
+				{ 
+					WebElement coveowrap = item.findElement(By.className("model-number"));
+					WebElement anchor = coveowrap.findElement(By.tagName("a"));
+					String sku = anchor.getAttribute("href");
+					String skuname = anchor.getText();
+					
+					//System.out.println(sku+"::"+ skuname);
+					if(skuname.equals("")){
+						System.err.println(sku+"::"+ skuname+ "null" );	
+					}
+					else{
+						System.out.println(sku+"::"+ skuname);	
+					}}}}//}}
