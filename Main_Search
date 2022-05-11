@@ -1,0 +1,52 @@
+package full_Neptune_site_testing;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Main_Search {
+	
+	
+	public static void main(String[] args) throws Exception {
+		WebDriver driver = new ChromeDriver();
+		//driver.get("https://www.brother.com.pe/search#");
+		//driver.get("https://www.brother.com.br/pesquisar#");
+		//driver.get("https://www.brother.com.ar/search#");
+		driver.get("https://www.brother.cl/search#");
+		//driver.get("https://latinamerica.brother.com/search#");
+		//driver.get("https://www.brother.com.mx/search#");
+		
+	for(int i=0; i<=200; i++) {
+		if(driver.findElement(By.className("load-more")).isDisplayed() ) {
+
+			 driver.findElement(By.className("load-more")).click();
+			Thread.sleep(1000);
+		}}
+	///.................................................
+	
+	List<WebElement> coveoResult = driver.findElements(By.className("site-search-result"));
+	for (WebElement item : coveoResult) 
+	{ 
+		//WebElement coveowrap = item.findElement(By.className("site-search-result"));
+		//WebElement  search= coveowrap.findElement(By.className("site-search-result"));
+		WebElement  search1= item.findElement(By.className("title-container"));
+		WebElement anchor = search1.findElement(By.tagName("h4"));
+		WebElement anchor1 = anchor.findElement(By.tagName("a"));
+		String sku = anchor1.getAttribute("href");
+		String skuname = anchor1.getText();
+		
+		//System.out.println(sku+"::"+ skuname);
+		if(skuname.contains("500 | Brother")){
+			System.err.println(sku+"::"+ skuname);	
+		}
+		else{
+			System.out.println(sku+"::"+ skuname);	
+		}}
+	}}
+//}}
+
+	
